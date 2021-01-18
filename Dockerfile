@@ -16,7 +16,7 @@ RUN source /os-release \
  && mkdir /install_root \
  && swupd os-install -V ${VERSION_ID} \
     --path /install_root --statedir /swupd-state \
-    --bundles=haproxy,clr-network-troubleshooter,iproute2 \
+    --bundles=haproxy,clr-network-troubleshooter,iproute2,mosquitto \
     --no-boot-update
 
 # For some Host OS configuration with redirect_dir on,

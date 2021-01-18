@@ -5,6 +5,7 @@ Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 Differences:
 - Added [`clr-network-troubleshooter`] bundle (for `ping` command)
 - Added [`iproute2`] bundle (for `ip` command)
+- Added [`mosquitto`] bundle (for `mosquitto_pub` command)
 - Added `VOLUME` statement in the [`Dockerfile`]
 
 ## What is this image?
@@ -61,3 +62,4 @@ at https://clearlinux.org/terms-and-policies
 [`Dockerfile`]: ./Dockerfile
 [`clr-network-troubleshooter`]: https://clearlinux.org/software/bundle/clr-network-troubleshooter
 [`iproute2`]: https://clearlinux.org/software/bundle/iproute2
+[`mosquitto`]: https://clearlinux.org/software/bundle/mosquitto
