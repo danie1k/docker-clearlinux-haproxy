@@ -128,6 +128,7 @@ if __name__ == "__main__":
         containers = d.get_containers()
         config = h.generate_new_config(*containers)
         h.write_haproxy_config(config)
+        h.gracefuly_reload_haproxy()
 
     try:
         print("Docker networks monitor started!", flush=True)
