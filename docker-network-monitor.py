@@ -123,16 +123,22 @@ if __name__ == "__main__":
         domain_name=os.environ["DOMAIN_NAME"],
     )
 
-    @debounce(10)
-    def tick(_unused) -> None:
+    def tick() -> None:
         containers = d.get_containers()
         config = h.generate_new_config(*containers)
         h.write_haproxy_config(config)
         h.gracefuly_reload_haproxy()
 
+    @debounce(10)
+    def debounced_tick(_unused) -> None:
+        tick()
+
+    # Build servers list on startup
+    tick()
+
     try:
         print("Docker networks monitor started!", flush=True)
-        d.listen_network_changes(tick)
+        d.listen_network_changes(debounced_tick)
     finally:
         print("Docker networks monitor exited unexpectedly!", flush=True)
         sys.exit(1)
