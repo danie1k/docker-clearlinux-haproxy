@@ -1,0 +1,13 @@
+-r requirements.in
+
+black==20.8b1
+flake8
+flake8-isort
+isort
+mypy
+pip-tools
+pylint
+pytest
+pytest-cov
+pytest-sugar
+yamllint

@@ -1,4 +1,8 @@
-# Clear Linux* OS `haproxy` container image
+[![SQ Status](https://travis-ci.com/danie1k/homelab-haproxy.svg?branch=master)](https://travis-ci.com/danie1k/homelab-haproxy)
+[![Docker Build Status](https://img.shields.io/docker/build/danie1k/homelab-haproxy)](https://hub.docker.com/repository/docker/danie1k/homelab-haproxy)
+[![MIT License](https://img.shields.io/github/license/danie1k/homelab-haproxy)](https://github.com/danie1k/homelab-haproxy/blob/master/LICENSE)
+
+# Automated HA-Proxy for Docker containers
 
 Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 
