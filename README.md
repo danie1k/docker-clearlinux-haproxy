@@ -27,9 +27,10 @@ Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 ## Environment variables
 
 - `DOCKER_API_BASE_URL="unix:///var/run/docker.sock"`
+- `DOMAIN_NAME="local"`
 - `HAPROXY_CONFIG_FILE="/usr/local/etc/haproxy/haproxy.cfg"`
 - `HAPROXY_PID_FILE="/var/run/haproxy.pid"`
-- `DOMAIN_NAME="local"`
+- `NETWORK_MONITOR_DEBOUNCE="10"` - in seconds
 - `NETWORK_NAME="bridge"`
 
 

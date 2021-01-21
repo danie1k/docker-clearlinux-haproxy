@@ -174,7 +174,7 @@ if __name__ == "__main__":
         h.write_haproxy_config(config)
         h.gracefuly_reload_haproxy()
 
-    @debounce(10)
+    @debounce(int(os.getenv("NETWORK_MONITOR_DEBOUNCE", "5")))
     def debounced_tick(_unused: Dict[str, Any]) -> None:
         tick()
 

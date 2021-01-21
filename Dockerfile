@@ -53,8 +53,9 @@ COPY haproxy.cfg /usr/local/etc/haproxy/
 ENV DOCKER_API_BASE_URL="unix:///var/run/docker.sock"
 ENV DOMAIN_NAME="local"
 ENV HAPROXY_CONFIG_FILE="/usr/local/etc/haproxy/haproxy.cfg"
-ENV HAPROXY_PID_FILE="/var/run/haproxy.pid"`
-ENV NETWORK_NAME="bridge"`
+ENV HAPROXY_PID_FILE="/var/run/haproxy.pid"
+ENV NETWORK_MONITOR_DEBOUNCE="10"
+ENV NETWORK_NAME="bridge"
 
 VOLUME /usr/local/etc/haproxy
 VOLUME /var/run/docker.sock
