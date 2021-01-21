@@ -122,7 +122,7 @@ class HaProxy:
         haproxy_pid_file = os.environ["HAPROXY_PID_FILE"]
         assert os.path.exists(
             haproxy_pid_file
-        ), "Cannot find PID FILE {haproxy_pid_file}! Did you forget to add -W flag to haproxy command?"
+        ), f"Cannot find PID FILE {haproxy_pid_file}! Did you forget to add -W flag to haproxy command?"
 
         # Verify configuration
         result = subprocess.run(["haproxy", "-c", "-f", HAPROXY_CONFIG_FILE], check=False)
