@@ -41,9 +41,11 @@ FROM clearlinux/os-core:latest
 
 COPY --from=builder /install_root /
 
+COPY requirements.txt /
+
 RUN mkdir -p /usr/local/etc/haproxy \
-# Download & install Docker for Python
- && pip install 'docker==4.4.1'
+# Install Python requirements
+ && pip install -r /requirements.txt
 
 COPY python/docker_network_monitor /
 COPY haproxy.cfg /usr/local/etc/haproxy/

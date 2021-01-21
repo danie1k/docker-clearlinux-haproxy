@@ -12,6 +12,10 @@ docker==4.4.1
     # via -r requirements.in
 idna==2.10
     # via requests
+jinja2==2.11.2
+    # via -r requirements.in
+markupsafe==1.1.1
+    # via jinja2
 requests==2.25.1
     # via docker
 six==1.15.0
