@@ -45,7 +45,7 @@ RUN mkdir -p /usr/local/etc/haproxy \
 # Download & install Docker for Python
  && pip install 'docker==4.4.1'
 
-COPY docker-network-monitor.py /usr/local/bin/
+COPY python/docker_network_monitor/monitor.py /usr/local/bin/docker-network-monitor.py
 COPY haproxy.cfg /usr/local/etc/haproxy/
 
 ENV DOCKER_API_BASE_URL="unix:///var/run/docker.sock"

@@ -8,7 +8,7 @@ import sys
 import textwrap
 from threading import Timer
 from types import FunctionType
-from typing import Iterator
+from typing import Any, Dict, Iterator
 
 import docker
 
@@ -18,22 +18,22 @@ HAPROXY_CONFIG_REGEX = fr"(?:{BLOCK_MARKER_BEGIN}((?:.*?\r?\n?)*){BLOCK_MARKER_E
 
 
 # Source: https://gist.github.com/walkermatt/2871026
-def debounce(wait):  # noqa
+def debounce(wait: int):  # type:ignore # noqa
     """Decorator that will postpone a functions
     execution until after wait seconds
     have elapsed since the last time it was invoked."""
 
-    def decorator(func):
-        def debounced(*_args, **_kwargs):
-            def call_it():
+    def decorator(func):  # type:ignore
+        def debounced(*_args: Any, **_kwargs: Any) -> None:
+            def call_it() -> None:
                 func(*_args, **_kwargs)
 
             try:
-                debounced.t.cancel()
+                debounced.t.cancel()  # type:ignore
             except AttributeError:
                 pass
-            debounced.t = Timer(wait, call_it)
-            debounced.t.start()
+            debounced.t = Timer(wait, call_it)  # type:ignore
+            debounced.t.start()  # type:ignore
 
         return debounced
 
@@ -44,7 +44,7 @@ class Docker:
     docker_api: docker.APIClient
     network_name: str
 
-    Container = collections.namedtuple("Container", "ip hostname")
+    Container = collections.namedtuple("Container", "ip hostname labels")
 
     def __init__(self, network_name: str) -> None:
         self.docker_api = docker.APIClient(base_url=os.environ["DOCKER_API_BASE_URL"])
@@ -52,7 +52,12 @@ class Docker:
 
     def get_containers(self) -> Iterator[Container]:
         for container in self.docker_api.inspect_network(net_id=self.network_name)["Containers"].values():
-            yield Docker.Container(container["IPv4Address"].split("/", 1)[0], container["Name"])
+            detailed_container = self.docker_api.inspect_container(container["Name"])
+            yield Docker.Container(
+                ip=container["IPv4Address"].split("/", 1)[0],
+                hostname=container["Name"],
+                labels=detailed_container["Config"]["Labels"],
+            )
 
     def listen_network_changes(self, callback: FunctionType) -> None:
         filters = {
@@ -130,7 +135,7 @@ if __name__ == "__main__":
         h.gracefuly_reload_haproxy()
 
     @debounce(10)
-    def debounced_tick(_unused) -> None:
+    def debounced_tick(_unused: Dict[str, Any]) -> None:
         tick()
 
     # Build servers list on startup
