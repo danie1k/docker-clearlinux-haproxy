@@ -43,11 +43,11 @@ COPY --from=builder /install_root /
 
 COPY requirements.txt /
 
-RUN mkdir -p /usr/local/etc/haproxy \
+RUN mkdir -p /usr/local/etc/haproxy /docker_network_monitor/ \
 # Install Python requirements
  && pip install -r /requirements.txt
 
-COPY python/docker_network_monitor /
+COPY python/docker_network_monitor/ /docker_network_monitor/
 COPY haproxy.cfg /usr/local/etc/haproxy/
 
 ENV DOCKER_API_BASE_URL="unix:///var/run/docker.sock"
