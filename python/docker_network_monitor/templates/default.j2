@@ -1,4 +1,10 @@
 listen docker-{{ hostname }}
-  bind *:{{ source_port }} interface eth0
   mode tcp
+  bind *:{{ source_port }} interface eth0
+
+  # Allow only requests for a valid FQDN
+  acl is_{{ hostname }} hdr(host) -i "{{ hostname }}.${DOMAIN_NAME}"
+  tcp-request content accept if is_{{ hostname }}
+  tcp-request content reject
+
   server {{ hostname }} {{ ip }}:{{ target_port }}
