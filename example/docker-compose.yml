@@ -3,7 +3,7 @@ version: '3'
 
 services:
   haproxy:
-    image: danie1k/clearlinux-haproxy:rolling
+    image: danie1k/homelab-haproxy:rolling
     command:
       - "python /usr/local/bin/docker-network-monitor.py"
       - "haproxy -W -db -p /var/run/haproxy.pid -f /usr/local/etc/haproxy/haproxy.cfg"
