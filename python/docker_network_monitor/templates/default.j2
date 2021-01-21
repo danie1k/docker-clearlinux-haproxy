@@ -1,4 +1,9 @@
 listen docker-{{ hostname }}
-  bind *:{{ source_port }} interface eth0
   mode tcp
+  bind *:{{ source_port }} interface eth0
+
+  # Dispatching connections to different backends depending on the hostname which the client connected to
+  # is impossible to do on the TCP layer.
+  # -- https://serverfault.com/a/643135
+
   server {{ hostname }} {{ ip }}:{{ target_port }}
