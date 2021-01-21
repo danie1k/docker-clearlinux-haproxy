@@ -1,0 +1,4 @@
+listen docker-{{ hostname }}
+  bind *:{{ source_port }} interface eth0
+  mode tcp
+  server {{ hostname }} {{ ip }}:{{ target_port }}

@@ -14,7 +14,17 @@ Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 - Automatically map names of these containers in HA-Proxy to FQDNs
 
 
-**Environment variables**
+## Usage
+
+- Run this container at least in two Docker Networks.
+- By default, it will listen for requests on `eth0`, so make your end-user-facing network to be first on a list.
+- Monitoring tool will automatically modify HA-Proxy settings
+- If any new container will show up, it will be added to configuration **if it has the following labels set**:
+    - `haproxy.source_port`
+    - `haproxy.target_port`
+
+
+## Environment variables
 
 - `DOCKER_API_BASE_URL="unix:///var/run/docker.sock"`
 - `HAPROXY_CONFIG_FILE="/usr/local/etc/haproxy/haproxy.cfg"`
@@ -23,7 +33,7 @@ Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 - `NETWORK_NAME="bridge"`
 
 
-**Volumes**
+## Volumes
 
 - `/usr/local/etc/haproxy`
 - `/var/run/docker.sock`
