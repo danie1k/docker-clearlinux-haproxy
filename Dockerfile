@@ -19,7 +19,7 @@ RUN source /os-release \
  && mkdir /install_root \
  && swupd os-install -V $(cat /usr/lib/os-release | grep VERSION_ID | awk -F= '{print $2}') \
     --path /install_root --statedir /swupd-state \
-    --bundles=haproxy,clr-network-troubleshooter,inotify-tools,iproute2,python3-basic \
+    --bundles=haproxy,clr-network-troubleshooter,python3-basic \
     --no-boot-update \
 # Download & install multirun
  && curl -s -o /tmp/multirun.tar.gz \
