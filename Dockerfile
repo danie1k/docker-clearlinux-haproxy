@@ -1,4 +1,4 @@
-FROM clearlinux:latest  AS builder
+FROM clearlinux:latest AS builder
 
 ARG swupd_args
 ARG multirun_version=1.0.0
@@ -59,6 +59,5 @@ ENV NETWORK_NAME="bridge"`
 VOLUME /usr/local/etc/haproxy
 VOLUME /var/run/docker.sock
 
-STOPSIGNAL SIGUSR1
 ENTRYPOINT ["/usr/local/bin/multirun"]
 CMD ["echo 'You need to manually specify command for this Docker Container!'", "false"]
