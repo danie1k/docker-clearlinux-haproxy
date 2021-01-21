@@ -43,7 +43,7 @@ COPY --from=builder /install_root /
 
 COPY requirements.txt /
 
-RUN mkdir -p /usr/local/etc/haproxy /docker_network_monitor/ \
+RUN mkdir -p $HAPROXY_CONFIG_VOLUME /docker_network_monitor \
 # Install Python requirements
  && pip install -r /requirements.txt
 
@@ -52,12 +52,12 @@ COPY haproxy.cfg /usr/local/etc/haproxy/
 
 ENV DOCKER_API_BASE_URL="unix:///var/run/docker.sock"
 ENV DOMAIN_NAME="local"
-ENV HAPROXY_CONFIG_FILE="/usr/local/etc/haproxy/haproxy.cfg"
+ENV HAPROXY_CONFIG_VOLUME="/usr/local/etc/haproxy"
 ENV HAPROXY_PID_FILE="/var/run/haproxy.pid"
 ENV NETWORK_MONITOR_DEBOUNCE="10"
 ENV NETWORK_NAME="bridge"
 
-VOLUME /usr/local/etc/haproxy
+VOLUME $HAPROXY_CONFIG_VOLUME
 VOLUME /var/run/docker.sock
 
 ENTRYPOINT ["/usr/local/bin/multirun"]

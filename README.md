@@ -22,13 +22,15 @@ Based on https://github.com/clearlinux/dockerfiles/tree/master/haproxy
 - If any new container will show up, it will be added to configuration **if it has the following labels set**:
     - `haproxy.source_port`
     - `haproxy.target_port`
+- HA-Proxy config blocks are generated using [Jinja](https://jinja.palletsprojects.com/) template engine
+- Built-in templates can be easily overridden by adding the `templates` directory to `HAPROXY_CONFIG_VOLUME` with `.j2` file(s)
 
 
 ## Environment variables
 
 - `DOCKER_API_BASE_URL="unix:///var/run/docker.sock"`
 - `DOMAIN_NAME="local"`
-- `HAPROXY_CONFIG_FILE="/usr/local/etc/haproxy/haproxy.cfg"`
+- `HAPROXY_CONFIG_VOLUME="/usr/local/etc/haproxy"`
 - `HAPROXY_PID_FILE="/var/run/haproxy.pid"`
 - `NETWORK_MONITOR_DEBOUNCE="10"` - in seconds
 - `NETWORK_NAME="bridge"`

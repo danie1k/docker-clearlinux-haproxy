@@ -15,7 +15,9 @@ import docker
 import jinja2
 
 CWD = pathlib.Path(__file__).parent
-HAPROCY_CONFIG_ANCHOR = "# DOCKER_NETWORK_MONITOR_ANCHOR"
+HAPROXY_CONFIG_ANCHOR = "# DOCKER_NETWORK_MONITOR_ANCHOR"
+HAPROXY_CONFIG_FILE = os.path.join(os.environ["HAPROXY_CONFIG_VOLUME"], "haproxy.cfg")
+HAPROXY_CONFIG_VOLUME = pathlib.Path(os.environ["HAPROXY_CONFIG_VOLUME"])
 
 
 # Source: https://gist.github.com/walkermatt/2871026
@@ -103,7 +105,7 @@ class HaProxy:
         config_string = []
         for item in lines:
             config_string.append(item)
-            if item == HAPROCY_CONFIG_ANCHOR:
+            if item == HAPROXY_CONFIG_ANCHOR:
                 config_string.append(os.linesep)
                 break
         result = os.linesep.join(config_string)
@@ -123,7 +125,7 @@ class HaProxy:
         ), "Cannot find PID FILE {haproxy_pid_file}! Did you forget to add -W flag to haproxy command?"
 
         # Verify configuration
-        result = subprocess.run(["haproxy", "-c", "-f", os.environ["HAPROXY_CONFIG_FILE"]], check=False)
+        result = subprocess.run(["haproxy", "-c", "-f", HAPROXY_CONFIG_FILE], check=False)
         assert result.returncode == 0, "Unable to reload HA-Proxy due to configuration file errors!"
 
         # Reload HA-Proxy
@@ -141,9 +143,14 @@ class TemplateEngine:
     available_templates: Dict[str, pathlib.Path]
 
     def __init__(self) -> None:
-        self.available_templates = {
-            pathlib.Path(item).stem: pathlib.Path(item) for item in glob.glob(str(CWD / "templates" / "*.j2"))
-        }
+        templates_dirs = (HAPROXY_CONFIG_VOLUME / "templates", CWD / "templates")
+
+        self.available_templates = {}
+
+        for directory in templates_dirs:
+            for item in glob.glob(str(directory / "*.j2")):
+                template = pathlib.Path(item)
+                self.available_templates.setdefault(template.stem, template)
 
     def get_template(self, container: Docker.Container) -> jinja2.Template:
         template_file: pathlib.Path = self.available_templates.get(
@@ -163,10 +170,7 @@ class TemplateEngine:
 
 if __name__ == "__main__":
     d = Docker(network_name=os.environ["NETWORK_NAME"])
-    h = HaProxy(
-        config_path=os.environ["HAPROXY_CONFIG_FILE"],
-        domain_name=os.environ["DOMAIN_NAME"],
-    )
+    h = HaProxy(config_path=HAPROXY_CONFIG_FILE, domain_name=os.environ["DOMAIN_NAME"])
 
     def tick() -> None:
         containers = d.get_containers()
